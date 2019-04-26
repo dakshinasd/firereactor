@@ -1,4 +1,5 @@
 const initState = {
+    loading: false,
     projects: [
         { id: 1, title: "This is so facinating", content: "blah, blah blah" },
         { id: 2, title: "Wow. Suprising!!", content: "blah, blah blah" },
@@ -6,9 +7,33 @@ const initState = {
     ]
 }
 
-const projectReducer = (state = initState, {action, payload}) => {
+const projectReducer = (state = initState, {type, payload}) => {
 
-    return state;
+    switch(type){
+
+        case "LOADING_START":
+            return {
+                ...state,
+                loading: true
+            }
+
+        case "LOADING_STOP":
+            return {
+                ...state,
+                loading: false
+            }
+
+        case "ADD_PROJECT":
+            console.log("Project Created", type, payload);
+            return state;
+            
+        case "ADD_PROJECT_ERROR":
+            console.log("ERROR", payload);
+            return state;
+
+        default:
+            return state;
+    }
 }
 
 export default projectReducer;
