@@ -24,7 +24,6 @@ const projectReducer = (state = initState, {type, payload}) => {
             }
 
         case "ADD_PROJECT":
-            console.log("Project Created", type, payload);
             return state;
             
         case "ADD_PROJECT_ERROR":

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { createProject } from '../../store/actions/project.actions';
 import LoaderInt from '../helpers/LoaderInt';
@@ -20,12 +21,14 @@ class CreateProject extends Component {
 
         e.preventDefault();
         this.props.createProject(this.state);
+        this.props.history.push("/")
     }
 
     
     render() {
 
         const btnClass = this.props.isLoading ? "disabled" : null;
+        if(!this.props.auth.uid) return <Redirect to="/signin" />
 
         return (
         <div className="container">
@@ -55,7 +58,8 @@ const mapStateToProps = (state) => {
 
     return{
 
-        isLoading : state.project.loading
+        isLoading : state.project.loading,
+        auth: state.firebase.auth
     }
 }
 

@@ -7,6 +7,7 @@ import ProjectDetails from './components/projects/ProjectDetails';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import CreateProject from './components/projects/CreateProject';
+import NotFound from './components/helpers/NotFound';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/signup" component={SignUp}/>
           <Route path="/project/create" component={CreateProject}/>
           <Route path="/project/:id" component={ProjectDetails}/>
+          <Route component={NotFound} />
         </Switch>
       </div>
     </BrowserRouter>
