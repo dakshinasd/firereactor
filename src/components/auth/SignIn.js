@@ -1,4 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect} from 'react-router-dom';
+
+import { signIn } from '../../store/actions/auth.actions'; 
+import  LoaderInt  from '../helpers/LoaderInt';
 
 class SignIn extends Component {
 
@@ -15,13 +20,17 @@ class SignIn extends Component {
     handleOnSubmit = (e) => {
 
         e.preventDefault();
-        console.log(this.state)
+        this.props.signIn(this.state)
     }
 
     render() {
+        
+        if(this.props.uid) return <Redirect to="/" />
+        const btnLoaderClass = this.props.isLoading ? "disabled" : null;
         return (
         <div className="container">
             <form onSubmit={this.handleOnSubmit} className="white" >
+                { this.props.isLoading ? <LoaderInt /> : null}
                 <h5 className="grey-text text-darken-3">Sign In</h5>
                 <div className="input-field">
                     <label htmlFor="email">Email</label>
@@ -29,10 +38,13 @@ class SignIn extends Component {
                 </div>
                 <div className="input-field">
                     <label htmlFor="password">Password</label>
-                    <input type="text" id="password" onChange={this.handleOnChange}/>
+                    <input type="password" id="password" onChange={this.handleOnChange}/>
                 </div>
                 <div className="input-field">
-                    <button className="btn pink lighten-1 z-depth-0">Sign In</button>
+                <div className="red-text center">
+                    {this.props.authError ? <p>{this.props.authError.message}</p> : null}
+                </div>
+                    <button className={`btn pink lighten-1 z-depth-0 ${btnLoaderClass}`}>Sign In</button>
                 </div>
             </form>
         </div>
@@ -40,4 +52,24 @@ class SignIn extends Component {
     }
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+
+    return {
+
+        authError: state.auth.authError,
+        isLoading: state.auth.isLoading,
+        uid: state.firebase.auth.uid
+    }
+}
+
+const mapDispathcToProps = (dispatch) => {
+
+    return {
+        signIn: (credentials) => {
+
+            dispatch(signIn(credentials))
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispathcToProps)(SignIn);
